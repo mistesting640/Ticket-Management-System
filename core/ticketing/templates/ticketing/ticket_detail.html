@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ticket Details</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<div class="container mt-5">
+
+    <!-- TICKET SUMMARY -->
+    <div class="card shadow mb-4">
+        <div class="card-header bg-info text-white">
+            <h4>Ticket #{{ ticket.ticket_id }}</h4>
+        </div>
+
+        <div class="card-body">
+            <p><strong>Title:</strong> {{ ticket.title }}</p>
+            <p><strong>Description:</strong> {{ ticket.description }}</p>
+            <p><strong>Project:</strong> {{ ticket.project }}</p>
+            <p><strong>Department:</strong> {{ ticket.department }}</p>
+            <p><strong>Status:</strong>
+                <span class="badge bg-primary">{{ ticket.status }}</span>
+            </p>
+            <p><strong>Priority:</strong> {{ ticket.priority }}</p>
+            <p><strong>Created At:</strong> {{ ticket.created_at|date:"d M Y H:i" }}</p>
+
+            {% if ticket.acknowledged_at %}
+                <p><strong>Acknowledged At:</strong>
+                    {{ ticket.acknowledged_at|date:"d M Y H:i" }}
+                </p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- TIMELINE -->
+    <div class="card shadow">
+        <div class="card-header bg-secondary text-white">
+            <h5>Ticket Timeline</h5>
+        </div>
+
+        <div class="card-body">
+            {% if timeline %}
+                <ul class="list-group list-group-flush">
+                    {% for item in timeline %}
+                        <li class="list-group-item">
+                            <div class="d-flex justify-content-between">
+                                <strong>Status:</strong>
+                                <span class="badge bg-success">
+                                    {{ item.status }}
+                                </span>
+                            </div>
+
+                            <p class="mt-2 mb-1">
+                                <strong>Comment:</strong><br>
+                                {{ item.comment }}
+                            </p>
+
+                            <small class="text-muted">
+                                {{ item.created_at|date:"d M Y H:i" }}
+                                |
+                                Updated by:
+                                {% if item.performed_by %}
+                                    {{ item.performed_by.user.get_full_name|default:item.performed_by.user.username }}
+                                {% else %}
+                                    System
+                                {% endif %}
+
+                            </small>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="text-muted">No status updates yet.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- BACK BUTTON -->
+    <div class="mt-4">
+        <a href="{% url 'users:dashboard' %}" class="btn btn-secondary">
+            ← Back to Dashboard
+        </a>
+    </div>
+
+</div>
+
+</body>
+</html>

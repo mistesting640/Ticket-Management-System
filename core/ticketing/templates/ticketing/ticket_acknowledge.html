@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Acknowledge Ticket</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-7">
+
+            <div class="card shadow">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">Acknowledge Ticket</h5>
+                </div>
+
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+
+                        <!-- COMMENT -->
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">Comment</label>
+                            <textarea name="comment"
+                                      class="form-control"
+                                      rows="3"
+                                      placeholder="Describe your understanding or action plan"
+                                      required></textarea>
+                        </div>
+
+                        <hr>
+
+                        <!-- ACKNOWLEDGE SECTION -->
+                        <h6 class="text-success mb-3">
+                            ✔ Ticket is related to your department
+                        </h6>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col">
+                                <label class="form-label">TAT (Hours)</label>
+                                <select name="tat_hours" class="form-select">
+                                    {% for i in "0123456789"|make_list %}
+                                        <option value="{{ i }}">{{ i }} hrs</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="col">
+                                <label class="form-label">TAT (Minutes)</label>
+                                <select name="tat_minutes" class="form-select">
+                                    <option value="0">0 min</option>
+                                    <option value="30">30 min</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <button type="submit"
+                                name="action"
+                                value="acknowledge"
+                                class="btn btn-success w-100 mb-3">
+                            🚀 Acknowledge & Start Work
+                        </button>
+
+                        <hr>
+
+                        <!-- REASSIGN SECTION -->
+                        <h6 class="text-warning mb-2">
+                            ⚠ Ticket is NOT related to your department
+                        </h6>
+
+                        <button type="submit"
+                                name="action"
+                                value="reassign"
+                                class="btn btn-outline-warning w-100">
+                            🔄 Request Reassignment
+                        </button>
+
+                    </form>
+                </div>
+            </div>
+
+            <div class="text-center mt-3">
+                <a href="{% url 'users:dashboard' %}" class="text-decoration-none">
+                    ← Back to Dashboard
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
