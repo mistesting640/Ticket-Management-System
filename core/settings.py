@@ -18,7 +18,7 @@ DEBUG = False
 
 # Allow Render domain + local development
 ALLOWED_HOSTS = [
-    "ticket-management-system-95py.onrender.com",
+    "",
     "localhost",
     "127.0.0.1",
 ]
