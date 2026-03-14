@@ -10,9 +10,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure--xs!5_#sk2)960$sm%$9pag!tn#yxj32v3alrgh&%ho@9q865y'
+SECRET_KEY = 'django-insecure--xs!5_#sk2)960$sm%$9pag!tn#yxj32v3alrgh%ho@9q865y'
 
-# Turn OFF debug in production
+
+# Production setting
 DEBUG = False
 
 
@@ -21,9 +22,11 @@ ALLOWED_HOSTS = [
     "*",
     "localhost",
     "127.0.0.1",
+    "ticket-management-system-95py.onrender.com",
 ]
 
 
+# Applications
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -37,10 +40,11 @@ INSTALLED_APPS = [
 ]
 
 
+# Middleware
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
 
-    # Helps with static files on Render
+    # WhiteNoise for static files in production
     'whitenoise.middleware.WhiteNoiseMiddleware',
 
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -55,14 +59,16 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'core.urls'
 
 
+# Templates
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
 
-        # Optional templates folder
+        # Global templates folder
         'DIRS': [BASE_DIR / "templates"],
 
         'APP_DIRS': True,
+
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.request',
@@ -88,37 +94,66 @@ DATABASES = {
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
-    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
+    {
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
 ]
 
 
 # Internationalization
 LANGUAGE_CODE = 'en-us'
+
 TIME_ZONE = 'UTC'
 
 USE_I18N = True
+
 USE_TZ = True
 
 
-# Static files
-STATIC_URL = 'static/'
+# -------------------------
+# STATIC FILES CONFIGURATION
+# -------------------------
 
-# Required for deployment
+STATIC_URL = '/static/'
+
+# Folder where Django collects static files for production
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
+# Your development static files
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+
+# WhiteNoise static storage
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 
-# Authentication redirects
+# -------------------------
+# AUTH REDIRECTS
+# -------------------------
+
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/users/dashboard/'
 LOGOUT_REDIRECT_URL = '/login/'
 
 
-# Fix CSRF errors on Render
+# -------------------------
+# RENDER SECURITY FIX
+# -------------------------
+
 CSRF_TRUSTED_ORIGINS = [
     "https://ticket-management-system-95py.onrender.com"
 ]
+
+
+# Default primary key field type
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
